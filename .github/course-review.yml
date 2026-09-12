@@ -115,3 +115,17 @@ assignments:
       - seqlist.c 必须是能够独立编译运行的完整 C 程序，只使用 stdio.h，包含 MAX_SIZE 为 100 的 SeqList 结构体，以及 printList、insertAt、removeAt 三个函数，函数通过 SeqList* 参数访问 data 和 size，removeAt 通过指针参数传回被删除的值；main 中依次完成初始化、insertAt(2, 25)、removeAt(1)、insertAt(10, 99)、removeAt(4) 并输出；不得使用 iostream、cout、bool 或 stdbool.h，不得把结果写死在 printf 中。
       - Lab3.md 必须保留题目结构，每道单项选择题必须且只能有一个选项被改为 [x]，不能全部不选或多选；4.11 和 4.12 两处填空不能留空，4.11 选择“一致”时填写“无”。
       - 只检查是否完成作答和程序是否完整，不判断选项、程序输出和文字回答是否正确。
+  Lab4:
+    deadline: "2026-09-18T00:00:00+08:00"
+    min_nonempty_lines: 5
+    allow_extra_files: false
+    required_files:
+      - CMakeLists.txt
+      - intvector.cpp
+      - Lab4.md
+    review_points:
+      - CMakeLists.txt 必须用 project 声明 C 和 CXX，并且有且只有一个 add_executable，目标 lab4_cpp 对应 intvector.cpp。
+      - intvector.cpp 必须是能够独立编译运行的完整 C++ 程序，只使用 iostream，包含 MAX_SIZE 为 100 的 class IntVector，数据成员 data 和 size 位于 private 下，包含构造函数 IntVector() 以及 getSize、empty、get、find、insert、remove、print 七个 public 成员函数，函数体写在类内且不能仍是框架中的 TODO 占位实现；main 与题目给出的一致，依次完成 4 次 insert 建表、insert(2, 25)、remove(1)、insert(10, 99)、remove(4)、get(2)、get(4)、find(30)、find(99)，以及第二个对象 other 的 insert 和 print 并输出。
+      - intvector.cpp 不得把数据成员改为 public 或删除 private，不得在类外直接访问 data 或 size，不得使用 printf、std::vector、new、delete 或全局变量，不得把输出结果写死在 cout 中，输出参数必须是引用 int& 而不是指针。
+      - Lab4.md 必须保留题目结构，每道单项选择题必须且只能有一个选项被改为 [x]，不能全部不选或多选；4.11 的填空不能留空，选择“一致”时填写“无”；4.12 的对应表右列至少填写三行；4.13 的填空不能留空。
+      - 只检查是否完成作答和程序是否完整，不判断选项、程序输出和文字回答是否正确。

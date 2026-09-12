@@ -5,7 +5,8 @@
 ._*
 .Spotlight-V100
 .Trashes
-
+.*
+.codegraph
 # Windows
 Thumbs.db
 Thumbs.db:encryptable
@@ -53,7 +54,7 @@ venv/
 *.out
 *.app/
 a.out
-
+*.omo
 # C/C++ build directories and generated files
 build/
 Build/
