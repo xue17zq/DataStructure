@@ -39,7 +39,7 @@ while (x < n / 2)
     x = 2 * x;
 ```
 
-- [ x] A. O(log₂n)
+- [ ] A. O(log₂n)
 - [ ] B. O(n)
 - [ ] C. O(nlog₂n)
 - [ ] D. O(n²)
