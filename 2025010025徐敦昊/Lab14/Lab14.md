@@ -40,7 +40,7 @@
 
 ![题 1 题图：一棵二叉树](imgs/2009_q3_stem1.png)
 
-- [ ] A. LRN
+- [  ] A. LRN
 - [ ] B. NRL
 - [ ] C. RLN
 - [x] D. RNL
