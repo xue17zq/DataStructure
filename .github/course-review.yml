@@ -557,3 +557,46 @@ assignments:
         答案只能通过勾选产生，学生不得在提交文件中自行添加正确答案、答案解析或答案速查表；除勾选外不得改动作答说明等教师模板文字。
       - >-
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
+  Lab16:
+    deadline: "2026-11-07T00:00:00+08:00"
+    min_nonempty_lines: 5
+    allow_extra_files: false
+    vision_review: false
+    ocr_review: false
+    report_template: homework/Lab16/Lab16.md
+    # 第一阶段数量预检，仅对本次新发布的 Lab16 启用，不影响 Lab1—Lab15。
+    template_metrics:
+      enabled: true
+      report_file: Lab16.md
+      characters: ['#', '-', '*', '`', '|', '>']
+      max_file_bytes: 200000
+    required_files:
+      - Lab16.md
+      - imgs/2024_q4_stem1.png
+      - imgs/2013_q8_stem1.png
+      - imgs/2016_q6_stem1.png
+      - imgs/2015_q6_stem1.png
+      - imgs/2020_q7_stem1.png
+      - imgs/2012_q7_stem1.png
+      - imgs/2016_q8_stem1.png
+      - imgs/2021_q8_stem1.png
+      - imgs/2010_q8_stem1.png
+      - imgs/2014_q7_stem1.png
+      - imgs/2018_q7_stem1.png
+      - imgs/2021_q7_stem1.png
+      - imgs/2013_q9_stem1.png
+      - imgs/2019_q5_stem1.png
+      - imgs/2022_q7_stem1.png
+    review_points:
+      - >-
+        本次为纯书面作业，只提交 Lab16.md 和 imgs 目录下的 15 张题图，共 16 个文件，没有程序；不得因缺少 CMakeLists.txt、源码文件、运行截图、程序输出或 imgs 目录中的其他图片而判为不完整。
+      - >-
+        imgs 目录中的 15 张题图必须与 homework/Lab16/imgs/ 中的同名文件逐一对应，不得修改、重命名、替换或删除；Lab16.md 中所有图片引用路径必须保持不变。题 9、题 12、题 14、题 16、题 17、题 18、题 19、题 20、题 22、题 24、题 26、题 29、题 30、题 31、题 33 各有一张题图，文件名依次为 2024_q4_stem1.png、2013_q8_stem1.png、2016_q6_stem1.png、2015_q6_stem1.png、2020_q7_stem1.png、2012_q7_stem1.png、2016_q8_stem1.png、2021_q8_stem1.png、2010_q8_stem1.png、2014_q7_stem1.png、2018_q7_stem1.png、2021_q7_stem1.png、2013_q9_stem1.png、2019_q5_stem1.png、2022_q7_stem1.png；缺少任一题图文件或改动引用路径判为不完整。
+      - >-
+        Lab16.md 必须保留作业模板的完整题目结构：题 1 到题 33 共 33 道单项选择题，按题型分为七组，每题 4 个选项，全卷共 132 个选项；不得删除、合并、新增题目或选项，不得改写题面，不得调整选项顺序，不得把按题型分组改回按年份分组。
+      - >-
+        每道题必须作答：将该题所选选项前的 [ ] 改为 [x]，全卷恰好 33 处 [x]，每题恰好一处；不能全部不选，也不能一题勾选多项。整卷没有任何 [x]、某题未勾选或一题多选均判为未完成作答。
+      - >-
+        答案只能通过勾选产生，学生不得在提交文件中自行添加正确答案、答案解析或答案速查表；除勾选外不得改动作答说明等教师模板文字。
+      - >-
+        本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
