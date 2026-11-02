@@ -186,7 +186,7 @@ n       algorithm1    algorithm2    algorithm3    algorithm4
 
 程序实际输出的次数是否与第二部分选择的 `T(n)` 一致？
 
-- [x] A. 一致
+- [×] A. 一致
 - [ ] B. 不一致
 
 如果选择“不一致”，请检查程序和选择题答案，并在下面说明原因：
