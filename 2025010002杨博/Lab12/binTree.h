@@ -71,44 +71,84 @@ BinNodePosi& BinTree::searchIn(BinNodePosi& slot, char e) {
      * 关键：要返回“指针槽的引用”，不能返回节点指针的副本——删除时要靠它把叶子摘下来。
      * 与有序树的同类函数相比，这里每层两支都要走，所以是 Θ(n) 的遍历，不是 Θ(h) 的下降。
      */
+    if (!slot || slot->data == e) return slot; // 命中或空槽直接返回
+    BinNodePosi& leftRes = searchIn(slot->lc, e);
+    if (leftRes) return leftRes; // 如果在左边找到了，直接返回左边的结果，不再搜右边
+    return searchIn(slot->rc, e); // 否则返回右边的结果
 }
+
+
 
 BinNodePosi& BinTree::search(char e) {
     /* TODO 2 之二：按课本写法，把 _root 交给 searchIn。树为空时返回的就是 _root 自身。
-     */
+     */ return searchIn(_root, e);
 }
 
 BinNodePosi BinTree::buildIn(const char* seq, int& i) {
-    /* TODO 3 之一：先序扩展序列建树，写法与课本 CreateBiTree 的先序递归一致，
-     * 只是把“从输入流读一个字符”换成“从字符串读一个字符”：
-     * 读到 '\0' 说明序列结束，返回 nullptr；读到 '#' 说明是空子树，返回 nullptr；
-     * 否则用 new BinNode{ch, nullptr, nullptr} 建立节点，
-     * 再递归建左子树、右子树，分别接到 lc、rc 上，最后返回这个节点。
-     * 注意 i 要按引用推进，左右两次递归共用它；每读一个字符都要先把它取出来再 ++i。
-     */
+    /* TODO 3 之一：先序扩展序列建树 */
+    char ch = seq[i++]; // 先取出当前字符，i 后移
+
+    // 读到结束符或空树符，返回空指针
+    if (ch == '\0' || ch == '#') {
+        return nullptr;
+    }
+
+    // 否则用当前字符创建新节点
+    BinNodePosi node = new BinNode{ch, nullptr, nullptr};
+
+    // 递归建左右子树，并直接接到当前节点的 lc 和 rc 上
+    node->lc = buildIn(seq, i);
+    node->rc = buildIn(seq, i);
+
+    // 最后返回建好的这棵子树的根节点
+    return node;
 }
 
 bool BinTree::build(const char* seq) {
-    /* TODO 3 之二：先判断 _root 是否非空：非空返回 false，不破坏已有的树；
-     * 空树时把 i 置 0，_root = buildIn(seq, i)，返回 true。
-     * 空串或全是 '#' 时建出的是空树，同样返回 true。
-     */
+    /* TODO 3 之二：先判断非空 */
+    if (_root != nullptr) {
+        return false; // 树非空，拒绝建树
+    }
+
+    int i = 0; // 初始化索引
+    // 直接把 buildIn 返回的根节点赋给 _root
+    _root = buildIn(seq, i);
+
+    return true;
 }
 
 bool BinTree::remove(char e) {
-    /* TODO 4：先 search 取出 e 所在的那个槽。槽为空说明树中没有 e，返回 false；
-     * 槽里的节点还有孩子（用 HasChild 宏判断）说明不是叶子，本实验不处理，返回 false 且不动树；
-     * 是叶子时先 delete 这个节点，再把这一格槽写成 nullptr——这一步不能省，
-     * 否则父节点还指着已经释放的节点。
-     */
+    /* TODO 4：... */
+    BinNodePosi& slot = search(e); // 获取槽的引用
+
+    if (!slot) return false; // 槽为空，说明不存在
+
+    // 判断是否有孩子 (使用教师提供的宏，或者自己写 if(slot->lc || slot->rc))
+    if (HasChild(*slot)) return false; // 有孩子，不是叶子，拒绝删除
+
+    // 是叶子，执行删除
+    delete slot;    // 释放内存
+    slot = nullptr; // 关键一步：把父节点的指针（即这个槽）置空，防止野指针
+
+    return true;
 }
 
 bool BinTree::update(char oldValue, char newValue) {
-    /* TODO 5：三种不该修改的情况都返回 false 且树不变：两个值相等；旧值不在树中；
-     * 新值已经在树中（否则会出现重复元素）。
-     * 其余情况先 search 出旧值所在的那一格，直接改写槽里那个节点的 data 即可——
-     * 本次没有有序性，改 data 不会破坏任何结构，这一点与有序树的“删旧插新”不同。
-     */
+    /* TODO 5：... */
+    // 1. 检查新旧值是否相等
+    if (oldValue == newValue) return false;
+
+    // 2. 查找旧值所在槽
+    BinNodePosi& slot = search(oldValue);
+    if (!slot) return false; // 旧值不存在
+
+    // 3. 检查新值是否已经存在 (调用search，如果返回非空说明存在)
+    if (search(newValue) != nullptr) return false;
+
+    // 4. 原地修改
+    slot->data = newValue;
+
+    return true;
 }
 
 /* ---------- 教师提供：三种遍历 ----------
