@@ -3,6 +3,23 @@
 
 /* 学生完成：只检查 exp[lo, hi)，调用者保证区间合法。 */
 bool paren(const char exp[], Rank lo, Rank hi) {
+    Stack<char> stack;
+    for (int i=lo;i<hi;++i) {
+        char c = exp[i];
+        if (c=='(' || c=='[' || c=='{') {
+            stack.push(c);
+        }else if (c==')' || c==']' || c=='}') {
+            if (stack.empty()) {
+                return false;
+            }
+            if ((c==')'&&stack.top()!='(') ||(c==']'&&stack.top()!='[') || (c=='}'&&stack.top()!='{')) {
+                return false;
+            }
+            stack.pop();
+        }
+
+    }
+    return stack.empty();
     /* TODO 5：用 Stack<char> 检查 exp[lo, hi) 里的三种括号，忽略其他字符，返回是否匹配。
      *
      * 思路——从左向右扫一遍：
@@ -18,21 +35,6 @@ bool paren(const char exp[], Rank lo, Rank hi) {
      * 注意：只处理 [lo, hi)，不要从 0 开始，也不要读到字符串结尾标记；
      *       取栈顶之前必须先判空。
      */
-    Stack<char> S;
-    for (Rank i = lo; i < hi; ++i) {
-        char c = exp[i];
-        if (c == '(' || c == '[' || c == '{') {
-            S.push(c);
-        } else if (c == ')' || c == ']' || c == '}') {
-            if (S.empty()) return false;
-            char left = S.top();
-            if (c == ')' && left != '(') return false;
-            if (c == ']' && left != '[') return false;
-            if (c == '}' && left != '{') return false;
-            S.pop();
-        }
-    }
-    return S.empty();
 }
 
 /* 以下测试与 main 由教师提供，不得修改。按题目中的输出逐项核对。 */

@@ -14,17 +14,17 @@ public:
 
 template <typename T>
 void Stack<T>::push(const T& e) {
-    this->insert(this->size(), e);
+    this->insert(e);/* TODO 1：复用基类的按秩插入，把向量末端作为栈顶。 */
 }
 
 template <typename T>
 T Stack<T>::pop() {
-    return this->remove(this->size() - 1);
+    return this->remove(this->size() -1);/* TODO 2：复用基类的按秩删除；调用者保证栈非空。 */
 }
 
 template <typename T>
 T& Stack<T>::top() {
-    return (*this)[this->size() - 1];
+   return (*this)[this->size() -1]; /* TODO 3：返回末元素的引用，不删除元素；调用者保证栈非空。 */
 }
 
 #endif
