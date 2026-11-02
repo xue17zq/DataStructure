@@ -71,20 +71,11 @@ BinNodePosi& BinTree::searchIn(BinNodePosi& slot, char e) {
      * 关键：要返回“指针槽的引用”，不能返回节点指针的副本——删除时要靠它把叶子摘下来。
      * 与有序树的同类函数相比，这里每层两支都要走，所以是 Θ(n) 的遍历，不是 Θ(h) 的下降。
      */
-    if(slot == nullptr || slot->data == e) {
-        return slot;
-    }
-    BinNodePosi& leftRes = searchIn(slot->lc, e);
-    if(leftRes != nullptr) {
-        return leftRes;
-    }
-    return searchIn(slot->rc, e);
 }
 
 BinNodePosi& BinTree::search(char e) {
     /* TODO 2 之二：按课本写法，把 _root 交给 searchIn。树为空时返回的就是 _root 自身。
      */
-    return searchIn(_root, e);
 }
 
 BinNodePosi BinTree::buildIn(const char* seq, int& i) {
@@ -95,18 +86,6 @@ BinNodePosi BinTree::buildIn(const char* seq, int& i) {
      * 再递归建左子树、右子树，分别接到 lc、rc 上，最后返回这个节点。
      * 注意 i 要按引用推进，左右两次递归共用它；每读一个字符都要先把它取出来再 ++i。
      */
-    char ch = seq[i];
-    if(ch == '\0') {
-        return nullptr;
-    }
-    ++i;
-    if(ch == '#') {
-        return nullptr;
-    }
-    BinNodePosi node = new BinNode{ch, nullptr, nullptr};
-    node->lc = buildIn(seq, i);
-    node->rc = buildIn(seq, i);
-    return node;
 }
 
 bool BinTree::build(const char* seq) {
@@ -114,12 +93,6 @@ bool BinTree::build(const char* seq) {
      * 空树时把 i 置 0，_root = buildIn(seq, i)，返回 true。
      * 空串或全是 '#' 时建出的是空树，同样返回 true。
      */
-    if(_root != nullptr) {
-        return false;
-    }
-    int i = 0;
-    _root = buildIn(seq, i);
-    return true;
 }
 
 bool BinTree::remove(char e) {
@@ -128,16 +101,6 @@ bool BinTree::remove(char e) {
      * 是叶子时先 delete 这个节点，再把这一格槽写成 nullptr——这一步不能省，
      * 否则父节点还指着已经释放的节点。
      */
-    BinNodePosi& slot = search(e);
-    if(slot == nullptr) {
-        return false;
-    }
-    if(HasChild(*slot)) {
-        return false;
-    }
-    delete slot;
-    slot = nullptr;
-    return true;
 }
 
 bool BinTree::update(char oldValue, char newValue) {
@@ -146,19 +109,6 @@ bool BinTree::update(char oldValue, char newValue) {
      * 其余情况先 search 出旧值所在的那一格，直接改写槽里那个节点的 data 即可——
      * 本次没有有序性，改 data 不会破坏任何结构，这一点与有序树的“删旧插新”不同。
      */
-    if(oldValue == newValue) {
-        return false;
-    }
-    BinNodePosi& oldSlot = search(oldValue);
-    if(oldSlot == nullptr) {
-        return false;
-    }
-    BinNodePosi& newSlot = search(newValue);
-    if(newSlot != nullptr) {
-        return false;
-    }
-    oldSlot->data = newValue;
-    return true;
 }
 
 /* ---------- 教师提供：三种遍历 ----------

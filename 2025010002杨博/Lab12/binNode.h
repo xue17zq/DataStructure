@@ -30,9 +30,6 @@ struct BinNode {
      * 这里只写三条数据成员声明：没有成员函数，也没有构造函数，
      * 于是 BinNode 是聚合体，可以直接用花括号依次写出三个成员来建立节点。
      */
-    char data;
-    BinNodePosi lc;
-    BinNodePosi rc;
 };
 
 /* 与课本 binnode_macro_basic.h 对应的结构判定宏（教师提供：不要求修改，也不要删除）。
