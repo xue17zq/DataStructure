@@ -97,9 +97,9 @@ IV. 表尾删除一个元素
 
 `prev` 是指向直接前驱结点的指针，`next` 是指向直接后继结点的指针。若要在 L 中指针 p 所指向的结点（非尾结点）之后插入指针 s 指向的新结点，则在执行了语句序列：`s->next = p->next; p->next = s;` 后，还要执行（ ）。
 
-- [x] A. s->next->prev = p; s->prev = p;
+- [ ] A. s->next->prev = p; s->prev = p;
 - [ ] B. p->next->prev = s; s->prev = p;
-- [ ] C. s->prev = s->next->prev; s->next->prev = s;
+- [x] C. s->prev = s->next->prev; s->next->prev = s;
 - [ ] D. p->next->prev = s->prev; s->next->prev = p;
 
 ### 题 8（2024 年）
