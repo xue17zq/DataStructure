@@ -600,3 +600,32 @@ assignments:
         答案只能通过勾选产生，学生不得在提交文件中自行添加正确答案、答案解析或答案速查表；除勾选外不得改动作答说明等教师模板文字。
       - >-
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
+  Lab17:
+    deadline: "2026-11-13T00:00:00+08:00"
+    min_nonempty_lines: 5
+    allow_extra_files: false
+    vision_review: false
+    ocr_review: false
+    report_template: homework/Lab17/Lab17.md
+    template_metrics:
+      enabled: true
+      report_file: Lab17.md
+      characters: ['#', '-', '*', '`', '|', '>']
+      max_file_bytes: 200000
+    required_files:
+      - graph.cpp
+      - traversal.cpp
+      - Lab17.md
+    review_points:
+      - >-
+        本次只提交 graph.cpp、traversal.cpp、Lab17.md 三个文件。graph.h、main.cpp、CMakeLists.txt 是 homework/Lab17 中的教师公共文件，只在本地保留用于构建和 CTest，不修改、不提交；不得因缺少这三个公共文件、截图、imgs、运行日志或其他源文件而判为不完整。学生三个文件与教师三个文件放在同一目录即可构成 C++17 程序。
+      - >-
+        graph.cpp 保留 graph.h 的包含、教师提供的 initGraph 和 printMatrix，以及 bool insertEdge(Graph& graph, int from, int to)、bool removeEdge(Graph& graph, int from, int to) 的接口。两处 TODO 须补全为真实实现并删除对应 TODO 占位注释：使用 numVertices 判断编号范围，非法编号、自环、重复插入或删除不存在的边时拒绝且不修改图；成功时修改对应矩阵位置并更新 numEdges，无向图同步处理两个对称位置但边数只改变一次，有向图只处理指定方向。不能写成空函数或占位返回，不得另写 main 或用其他容器代替邻接矩阵。
+      - >-
+        traversal.cpp 保留 graph.h、iostream、queue 的包含，以及 dfs、dfsAll、bfs、bfsAll 的名称、参数和返回类型；四处 TODO 须完成真实搜索并删除对应 TODO 占位注释。dfs 和 bfs 接受 const Graph&、合法起点编号 int 和 bool visited[]；全图函数接受 const Graph&。DFS 按“判断已访问、标记并输出、递归邻接点”的方式实现，BFS 使用 std::queue<int>，入队时标记，循环出队、输出、扩展邻接点。邻接点按编号递增扫描，只沿 edge[v][w] 表示的出边；访问即输出顶点字符和空格，不在搜索中输出标签或换行。不得写死序列，不得以栈模拟替代递归或以递归替代 BFS 队列。
+      - >-
+        dfsAll 与 bfsAll 各自在函数内初始化一次 bool visited[MAXV] 数组，按编号递增检查全部顶点，对未访问顶点启动单次搜索；单次 dfs、bfs 共享并更新调用者传入的数组，不重置访问记录。空图不输出，已标记起点直接返回；不得增加全局访问数组、每启动一次搜索就清空数组，或删除教师提供的接口。
+      - >-
+        Lab17.md 保留操作手册的章节结构和第七节实验记录：7.1 粘贴本人运行 lab17_graph 得到的邻接矩阵、顶点数/边数、从 A 出发的 DFS/BFS、全图 DFS/BFS，以及 18 组测试的完整输出和最后一行汇总；7.2 完成三个总结问题（DFS 与 BFS 输出顺序的差异、BFS 为什么在入队时标记、矩阵版全图遍历为什么是 O(n²) 而不是 O(n+e)）。填写位置不得留空或保留“（填写）”；不要求抄写题目、不要求截图，手册中的示例输出不能代替本人运行记录。
+      - >-
+        本文本阶段检查接口、真实代码任务和作答完整性，不判断矩阵数据、遍历序列、复杂度或解释是否正确，不声称已编译运行学生程序；正确性由课程后续检测进一步检查。第七节之外的教师说明和预期输出不要求改写为个人结果。报告行数和符号数量由前置确定性检查负责，数量通过不代表作答完成；本次不启用第二阶段固定题号或逐题结构化返回规则。
