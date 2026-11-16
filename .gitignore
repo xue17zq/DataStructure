@@ -6,6 +6,8 @@
 .Spotlight-V100
 .Trashes
 .*
+# .github/ 存放自动审核的工作流与配置，必须纳入版本管理（.* 会把整个目录忽略掉）
+!.github/
 .codegraph
 # Windows
 Thumbs.db

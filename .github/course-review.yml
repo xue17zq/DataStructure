@@ -2,6 +2,7 @@ version: 1
 
 course:
   name: 数据结构
+  id: data-structure
   timezone: Asia/Shanghai
   title_template: "[{student_id}{student_name}]{assignment_id}作业提交"
   submission_path_template: "{student_id}{student_name}/{assignment_id}"
@@ -10,17 +11,48 @@ course:
 features:
   auto_merge: true
   comment_review: true
-  close_late_pr: true
+  close_late_pr: false
   ai_review: true
   ai_feedback: true
   ocr_review: false
   vision_review: true
   metrics: true
+  grading: true
 
 defaults:
   min_nonempty_lines: 10
   allow_extra_files: false
   late_close_after_days: 7
+
+# 迟交不再阻止合并，只影响成绩上限（详见 course-pr-reviewer README）。
+# 制度上线前已发布的作业标注 legacy：不扣分、不虚构分数；新作业标注 tiered。
+grading:
+  storage:
+    branch: grades
+    schema_version: 1
+    write_receipts: true
+    # 合并后不在审核任务里重建报表：一次重建要读几百份收据，会吃掉
+    # GITHUB_TOKEN 的每小时额度。交给每日 grade-reconcile 或手工 grade export。
+    export_on_finalize: false
+  policy_version: 2026-fall-v1
+  defaults:
+    max_points: "10.00"
+    legacy:
+      record_completion: true
+      fixed_points: null
+    tiered:
+      grace:
+        enabled: true
+        hours: 48
+        require_substantive_snapshot: true
+      bands:
+        - { max_late_hours: 0, cap_percent: 100 }
+        - { max_late_hours: 48, cap_percent: 90 }
+        - { max_late_hours: 168, cap_percent: 75 }
+        - { max_late_hours: 336, cap_percent: 60 }
+        - { max_late_hours: 672, cap_percent: 40 }
+        - { max_late_hours: null, cap_percent: 20 }
+      after_final_accept: reject_merge
 
 ai:
   providers:
@@ -70,6 +102,8 @@ vision:
 assignments:
   Lab1:
     deadline: "2026-09-08T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 4
     allow_extra_files: false
     required_files:
@@ -90,6 +124,8 @@ assignments:
       - 截图必须来自学生本人的电脑环境并使用电脑截图功能；出现手机拍摄造成的反光、摩尔纹、明显倾斜或文字无法辨认时判为不合格。
   Lab2:
     deadline: "2026-09-11T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 10
     allow_extra_files: false
     required_files:
@@ -102,6 +138,8 @@ assignments:
       - 只检查是否完成作答和程序是否完整，不判断选项、实验数据和程序结果是否正确。
   Lab3:
     deadline: "2026-09-15T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     required_files:
@@ -117,6 +155,8 @@ assignments:
       - 只检查是否完成作答和程序是否完整，不判断选项、程序输出和文字回答是否正确。
   Lab4:
     deadline: "2026-09-18T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     required_files:
@@ -131,6 +171,8 @@ assignments:
       - 只检查是否完成作答和程序是否完整，不判断选项、程序输出和文字回答是否正确。
   Lab5:
     deadline: "2026-09-22T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: true
@@ -188,6 +230,8 @@ assignments:
         允许不同 CLion 版本、操作系统、主题、窗口排列、字节高亮和无关提示。图片须为本人电脑的真实截图；不接受手机拍屏、示意图或拼接修改的结果。只有关键内存地址或字节确实无法辨认、无法确认上述关系时，才因证据不足进入人工复核。
   Lab6:
     deadline: "2026-09-29T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: true
@@ -244,6 +288,8 @@ assignments:
         图片须为本人电脑的真实截图；不接受手机拍屏、示意图或拼接修改的结果。证据不足时进入人工复核，不直接判定不合格。
   Lab7:
     deadline: "2026-10-02T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -272,6 +318,8 @@ assignments:
         本文本阶段只检查三个文件的接口结构、程序完整性与作答完整性，不判断选项、运行结果或解释是否正确。
   Lab8:
     deadline: "2026-10-11T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: true
@@ -317,6 +365,8 @@ assignments:
         只按上述调用栈与已初始化变量验收，不额外要求断点行号、完整源文件、返回地址、Memory View 或标准库帧。左栏中未被选中的灰色行不算缺失帧，当前帧的行号与调用者帧的行号含义不同也不按错误处理。仅有 Run 输出而无 Debug 面板不满足要求；关键内容无法辨认时进入人工复核。
   Lab9:
     deadline: "2026-10-16T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -358,6 +408,8 @@ assignments:
         本文本阶段沿用本课程的接口结构、程序完整性和作答完整性审核，不判断运行数值、手工追踪、复杂度或解释是否正确，也不声称已实际编译或运行学生程序；正确性由课程后续检测进一步检查。Lab9.md 应保留完整模板并完成第六节，第一至五节的教师说明和示例不要求改写成个人结果；行数和各类源码符号数量由前置确定性检查负责，数量通过不代表作答完成。本次不启用第二阶段的固定题号、结构清单或逐题结构化返回规则。
   Lab10:
     deadline: "2026-10-22T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -387,6 +439,8 @@ assignments:
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
   Lab11:
     deadline: "2026-10-23T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -423,6 +477,8 @@ assignments:
         本文本阶段只检查接口结构、程序完整性和作答完整性，不判断遍历序列、手工追踪、复杂度或文字解释是否正确，也不声称已实际编译或运行学生程序；正确性由课程后续检测进一步检查。Lab11.md 应保留完整模板并完成第六节，第一至五节的教师说明与示例不要求改写成个人结果；行数和各类源码符号数量由前置确定性检查负责，数量通过不代表作答完成。本次不启用第二阶段的固定题号、结构清单或逐题结构化返回规则。
   Lab12:
     deadline: "2026-10-27T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -457,6 +513,8 @@ assignments:
         本文本阶段只检查接口结构、程序完整性和作答完整性，不判断运行数值、手工追踪、复杂度或文字解释是否正确，也不声称已实际编译或运行学生程序；正确性由课程后续检测进一步检查。Lab12.md 应保留完整模板并完成第六节，第一至五节的教师说明与示例不要求改写成个人结果；行数和各类源码符号数量由前置确定性检查负责，数量通过不代表作答完成。本次不启用第二阶段的固定题号、结构清单或逐题结构化返回规则。
   Lab13:
     deadline: "2026-10-29T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -488,6 +546,8 @@ assignments:
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
   Lab14:
     deadline: "2026-10-30T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -533,6 +593,8 @@ assignments:
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
   Lab15:
     deadline: "2026-11-03T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -559,6 +621,8 @@ assignments:
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
   Lab16:
     deadline: "2026-11-07T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -602,6 +666,8 @@ assignments:
         本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项和源码符号数量由前置确定性检查负责，数量通过不代表作答完成。
   Lab17:
     deadline: "2026-11-13T00:00:00+08:00"
+    grading:
+      mode: legacy
     min_nonempty_lines: 5
     allow_extra_files: false
     vision_review: false
@@ -629,3 +695,38 @@ assignments:
         Lab17.md 保留操作手册的章节结构和第七节实验记录：7.1 粘贴本人运行 lab17_graph 得到的邻接矩阵、顶点数/边数、从 A 出发的 DFS/BFS、全图 DFS/BFS，以及 18 组测试的完整输出和最后一行汇总；7.2 完成三个总结问题（DFS 与 BFS 输出顺序的差异、BFS 为什么在入队时标记、矩阵版全图遍历为什么是 O(n²) 而不是 O(n+e)）。填写位置不得留空或保留“（填写）”；不要求抄写题目、不要求截图，手册中的示例输出不能代替本人运行记录。
       - >-
         本文本阶段检查接口、真实代码任务和作答完整性，不判断矩阵数据、遍历序列、复杂度或解释是否正确，不声称已编译运行学生程序；正确性由课程后续检测进一步检查。第七节之外的教师说明和预期输出不要求改写为个人结果。报告行数和符号数量由前置确定性检查负责，数量通过不代表作答完成；本次不启用第二阶段固定题号或逐题结构化返回规则。
+  Lab18:
+    enabled: true
+    deadline: "2026-11-24T00:00:00+08:00"
+    # 首个启用分段迟交计分的作业（tiered），分档与修正期取 grading.defaults.tiered；
+    # 上线顺序与回滚步骤见 .github/grading-migration.md。
+    grading:
+      mode: tiered
+      max_points: "10.00"
+    min_nonempty_lines: 5
+    allow_extra_files: false
+    vision_review: false
+    ocr_review: false
+    report_template: homework/Lab18/Lab18.md
+    # 第一阶段数量预检，仅对本次新发布的 Lab18 启用，不影响 Lab1—Lab17。
+    template_metrics:
+      enabled: true
+      report_file: Lab18.md
+      characters: ['#', '-', '*', '`', '|', '>']
+      max_file_bytes: 200000
+    required_files:
+      - Lab18.md
+      - imgs/2017_q8_stem1.png
+    review_points:
+      - >-
+        本次为纯书面作业，只提交 Lab18.md 和 imgs 目录下的 1 张题图，共 2 个文件，没有程序；不得因缺少 CMakeLists.txt、源码文件、运行截图、程序输出或 imgs 目录中的其他图片而判为不完整。
+      - >-
+        imgs/2017_q8_stem1.png 必须原样复制自 homework/Lab18/imgs/ 中的同名文件，不得修改、重命名、替换或删除；Lab18.md 中题 4 的图片引用保持 imgs/2017_q8_stem1.png 原路径不变。缺少该题图文件或改动引用路径判为不完整。
+      - >-
+        Lab18.md 必须保留作业模板的完整题目结构：题 1 到题 7 共 7 道单项选择题，按题型分为三组，每题 4 个选项，全卷共 28 个选项；不得删除、合并、新增题目或选项，不得改写题面，不得调整选项顺序，不得把按题型分组改回按年份分组。题 4 的四个选项只有 A、B、C、D 标号、没有文字，这是刻意保留的，标号后留空不算缺项。
+      - >-
+        每道题必须作答：将该题所选选项前的 [ ] 改为 [x]，全卷恰好 7 处 [x]，每题恰好一处；不能全部不选，也不能一题勾选多项。整卷没有任何 [x]、某题未勾选或一题多选均判为未完成作答。
+      - >-
+        答案只能通过勾选产生，学生不得在提交文件中自行添加正确答案、答案解析或答案速查表；除勾选外不得改动作答说明等教师模板文字。
+      - >-
+        本文本阶段只检查文件完整性与作答完整性，即每题是否填写了答案，不判断所选选项是否正确，不核对、不解释正确答案，也不因答案分布或与他人相同而判为不合格；内容正确性将在期末统一检测。题目、选项数量由前置确定性检查负责，数量通过不代表作答完成。
